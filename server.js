@@ -840,7 +840,25 @@ app.get("/api/getprodsbysubcat/:scid",async(req,res)=>
       res.send({code:-1,errmsg:e.message})
     }
   })
-
+app.get("/api/getfeatprods",async(req,res)=>
+    {
+      try
+      {
+        const result = await ProdModel.find({featured:"yes"}).limit(6)
+        if(result.length>0)
+        {
+          res.send({code:1,productsdata:result})
+        }
+        else
+        {
+          res.send({code:0})
+        }
+      }
+      catch(e)
+      {
+        res.send({code:-1,errmsg:e.message})
+      }
+    })
 var cartSchema = mongoose.Schema({prodid: { type: mongoose.Schema.Types.ObjectId, ref: 'product' },picture:String,prodname:String,rate:Number,qty:Number,totalcost:Number,username:String},{versionKey:false})
 
 const CartModel = mongoose.model('cart',cartSchema,"cart");  //modelname,schema,collection name
